@@ -13,15 +13,13 @@ const App = () => {
   return (
     <Provider store={store}>
       <Container>
-        <Header />
         <Router>
-          <Container>
-            <Switch>
-              <Route exact path={Routes.Home} component={Search} />
-              <Route exact path={Routes.Search} component={Search} />
-              <Route exact path={Routes.Favorites} component={Favorites} />
-            </Switch>
-          </Container>
+          <Header />
+          <Switch>
+            <Route exact path={Routes.Home} component={Search} />
+            <Route exact path={Routes.Search} component={Search} />
+            <Route exact path={Routes.Favorites} component={Favorites} />
+          </Switch>
         </Router>
       </Container>
     </Provider>

@@ -65,6 +65,7 @@ const Search = ({
 }) => {
   const classes = useStyles();
   const [keyword, setKeyword] = useState("");
+
   const _onInputChange = event => {
     const newValue = get(event, "target.value", "");
     setKeyword(newValue.trim());

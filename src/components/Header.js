@@ -4,6 +4,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { Divider } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 import Routes from "../utils/Routes"
 
@@ -29,6 +30,11 @@ const useStyles = makeStyles(theme => ({
 
 const Header = props => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const _onNavigate = url => () => {
+    history.push(url);
+  }
 
   return (
     <React.Fragment>
@@ -49,9 +55,10 @@ const Header = props => {
             color="inherit"
             noWrap
             key="search"
-            href={Routes.Search}
+            onClick={_onNavigate(Routes.Search)}
             variant="body2"
             className={classes.toolbarLink}
+            component="span"
           >
             Search
           </Link>
@@ -59,9 +66,10 @@ const Header = props => {
             color="inherit"
             noWrap
             key="favorites"
-            href={Routes.Favorites}
+            onClick={_onNavigate(Routes.Favorites)}
             variant="body2"
             className={classes.toolbarLink}
+            component="span"
           >
             Favorites
           </Link>
