@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,7 +6,10 @@ import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import PropTypes from "prop-types";
+import get from "lodash/get";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -31,18 +34,58 @@ const useStyles = makeStyles(theme => ({
   cardMedia: {
     paddingTop: "56.25%" // 16:9
   },
-  favoriteIcon: {
+  like: {
     position: "absolute",
     right: 10,
     bottom: 10,
-    visibility: "hidden"
+    visibility: "visible",
+    opacity: 1
+  },
+  dislike: {
+    position: "absolute",
+    right: 10,
+    bottom: 10,
+    visibility: "hidden",
+    opacity: 0.3
+  },
+  loadMore: {
+    marginLeft: 15
   }
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-const Search = () => {
+const Search = ({
+  isLoading,
+  data,
+  errorMessage,
+  onSearch,
+  total,
+  from,
+  likes,
+  onLike
+}) => {
   const classes = useStyles();
+  const [keyword, setKeyword] = useState("");
+  const _onInputChange = event => {
+    const newValue = get(event, "target.value", "");
+    setKeyword(newValue.trim());
+  };
+
+  const _onKeydown = event => {
+    const isEnter = parseInt(get(event, "keyCode", 0), 10) === 13;
+    if (isEnter) {
+      _onSearch();
+    }
+  };
+
+  const _onSearch = () => {
+    if (keyword.trim()) {
+      onSearch(keyword, from);
+    }
+  };
+
+  const _onLike = id => () => {
+    onLike(id);
+  };
 
   return (
     <Wrapper>
@@ -50,26 +93,67 @@ const Search = () => {
         <TextField
           className={classes.textField}
           placeholder="Start searching for images!"
+          value={keyword}
+          onChange={_onInputChange}
+          onKeyDown={_onKeydown}
         />
       </SearchBox>
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid container spacing={4}>
-          {cards.map(card => (
-            <Grid item key={card} xs={12} sm={6} md={3}>
+          {data.map(card => (
+            <Grid item key={card.id} xs={12} sm={6} md={3}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.cardMedia}
-                  image="https://source.unsplash.com/random"
+                  image={card.url}
                   title="Image title"
                 />
-                <FavoriteIcon className={classes.favoriteIcon} color="error" />
+                <FavoriteIcon
+                  className={`${
+                    likes.includes(card.id) ? classes.like : classes.dislike
+                  }`}
+                  color="error"
+                  onClick={_onLike(card.id)}
+                />
               </Card>
             </Grid>
           ))}
+          {keyword.trim() && data.length < total ? (
+            <Typography
+              className={classes.loadMore}
+              variant="subtitle1"
+              color="primary"
+              onClick={_onSearch}
+            >
+              Load more...
+            </Typography>
+          ) : null}
         </Grid>
       </Container>
     </Wrapper>
   );
+};
+
+Search.propTypes = {
+  isLoading: PropTypes.bool,
+  data: PropTypes.array,
+  errorMessage: PropTypes.string,
+  onSearch: PropTypes.func,
+  total: PropTypes.number,
+  from: PropTypes.number,
+  likes: PropTypes.array,
+  onLike: PropTypes.func
+};
+
+Search.defaultProps = {
+  isLoading: false,
+  data: [],
+  errorMessage: "",
+  onSearch: null,
+  total: 0,
+  from: 0,
+  likes: [],
+  onLike: null
 };
 
 export default Search;
