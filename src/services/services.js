@@ -22,6 +22,15 @@ const services = {
       }
     };
     return Axios.get("/search", _config);
+  },
+  onGetFavorites: ids => {
+    const _config = {
+      params: {
+        apiKey,
+        ids
+      }
+    };
+    return Axios.get("", _config);
   }
 };
 

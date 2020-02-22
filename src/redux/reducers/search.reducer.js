@@ -5,7 +5,9 @@ import {
   SearchSuccess,
   SearchFail,
   KeywordChange,
-  Like
+  Like,
+  ResetSearch,
+  UpdateLikesInSearch
 } from "../types";
 
 const initialState = {
@@ -15,7 +17,9 @@ const initialState = {
   total: 0,
   from: 0,
   keyword: "",
-  likes: localStorage.getItem("likes") ?  JSON.parse(localStorage.getItem("likes")) :  []
+  likes: localStorage.getItem("likes")
+    ? JSON.parse(localStorage.getItem("likes"))
+    : []
 };
 
 export default function SearchReducer(state = initialState, action) {
@@ -69,6 +73,24 @@ export default function SearchReducer(state = initialState, action) {
           likes: [...likes, action.id]
         };
       }
+    case ResetSearch:
+      return {
+        ...state,
+        data: [],
+        isLoading: false,
+        errorMessage: "",
+        total: 0,
+        from: 0,
+        keyword: "",
+        likes: localStorage.getItem("likes")
+          ? JSON.parse(localStorage.getItem("likes"))
+          : []
+      };
+    case UpdateLikesInSearch:
+      return {
+        ...state,
+        likes: action.likes
+      };
     default:
       return state;
   }

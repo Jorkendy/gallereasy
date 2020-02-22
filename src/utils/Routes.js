@@ -1,5 +1,5 @@
 const Routes = {
-  Home: "",
+  Home: "/",
   Search: "/search",
   Favorites: "/favorites"
 };

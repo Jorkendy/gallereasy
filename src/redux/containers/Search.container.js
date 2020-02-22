@@ -1,7 +1,8 @@
 import { connect } from "react-redux";
 
 import Search from "../../pages/Search";
-import { onSearch, onLike } from "../actions/search.actions";
+import { onSearch, onLike, onResetSearch } from "../actions/search.actions";
+import { onUpdateLike } from "../actions/favorites.actions";
 
 const mapStateToProps = (state /*, ownProps*/) => {
   let { SearchReducer } = state;
@@ -16,6 +17,6 @@ const mapStateToProps = (state /*, ownProps*/) => {
   };
 };
 
-const mapDispatchToProps = { onSearch, onLike };
+const mapDispatchToProps = { onSearch, onLike, onResetSearch, onUpdateLike };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

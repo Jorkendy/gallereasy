@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -61,10 +61,24 @@ const Search = ({
   total,
   from,
   likes,
-  onLike
+  onLike,
+  onResetSearch,
+  onUpdateLike
 }) => {
   const classes = useStyles();
   const [keyword, setKeyword] = useState("");
+
+  useEffect(() => {
+    return () => {
+      onResetSearch();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    onUpdateLike(likes);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [likes]);
 
   const _onInputChange = event => {
     const newValue = get(event, "target.value", "");
@@ -143,7 +157,9 @@ Search.propTypes = {
   total: PropTypes.number,
   from: PropTypes.number,
   likes: PropTypes.array,
-  onLike: PropTypes.func
+  onLike: PropTypes.func,
+  onResetSearch: PropTypes.func,
+  onUpdateLike: PropTypes.func
 };
 
 Search.defaultProps = {
@@ -154,7 +170,9 @@ Search.defaultProps = {
   total: 0,
   from: 0,
   likes: [],
-  onLike: null
+  onLike: null,
+  onResetSearch: null,
+  onUpdateLike: null
 };
 
 export default Search;

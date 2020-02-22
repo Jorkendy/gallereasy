@@ -7,7 +7,7 @@ import store from "./redux/store";
 import Routes from "./utils/Routes";
 import Header from "./components/Header";
 import Search from "./redux/containers/Search.container";
-import Favorites from "./pages/Favorites";
+import Favorites from "./redux/containers/Favorites.container";
 
 const App = () => {
   return (

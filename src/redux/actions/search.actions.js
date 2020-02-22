@@ -1,6 +1,6 @@
 import get from "lodash/get";
 
-import { Search, SearchSuccess, SearchFail, Like } from "../types";
+import { Search, SearchSuccess, SearchFail, Like, ResetSearch, UpdateLikesInSearch } from "../types";
 import services from "../../services/services";
 
 export const onSearch = (keyword, from) => {
@@ -26,3 +26,15 @@ export const onLike = id => {
     dispatch({ type: Like, id });
   };
 };
+
+export const onResetSearch = () => {
+  return async dispatch => {
+    dispatch({ type: ResetSearch });
+  };
+};
+
+export const onUpdateLike = likes => {
+  return async dispatch => {
+    dispatch({ type: UpdateLikesInSearch, likes})
+  }
+}
